@@ -130,6 +130,10 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 %build
 %if %{with ocaml}
 # ml not supported by CMakeLists.txt, need to generate some files
+%if %{without ocaml_opt}
+# hack to avoid configuration failure
+OCAMLOPT=ocamlc \
+%endif
 %{__python} scripts/mk_make.py \
 	--ml
 # --dotnet --java --python
@@ -212,12 +216,18 @@ rm -rf $RPM_BUILD_ROOT
 cd build-cmake
 install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{site-lib/Z3,stublibs}
 ocamlfind install -destdir $RPM_BUILD_ROOT%{_libdir}/ocaml Z3 src/api/ml/META \
-	src/api/ml/z3*.mli src/api/ml/z3*.cmi src/api/ml/z3*.cmx \
-	src/api/ml/libz3ml.a src/api/ml/z3ml.a src/api/ml/z3ml.cma \
-	%{?with_ocaml_opt:src/api/ml/z3ml.cmxa src/api/ml/z3ml.cmxs src/api/ml/dllz3ml.so}
+	src/api/ml/z3*.mli src/api/ml/z3*.cmi \
+	src/api/ml/dllz3ml.so src/api/ml/libz3ml.a src/api/ml/z3ml.cma \
+%if %{with ocaml_opt}
+	src/api/ml/z3*.cmx \
+	src/api/ml/z3ml.a src/api/ml/z3ml.cmxa src/api/ml/z3ml.cmxs
+%endif
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/ocaml/stublibs/dllz3ml.so.owner
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/ocaml/Z3/META $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/Z3
+%if %{without ocaml_opt}
+%{__sed} -i -e '/archive.*native/d' $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/Z3/META
+%endif
 cat <<EOF >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/Z3/META
 directory="+Z3"
 EOF
@@ -274,10 +284,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n ocaml-z3-devel
 %defattr(644,root,root,755)
+%{_libdir}/ocaml/Z3/libz3ml.a
 %{_libdir}/ocaml/Z3/z3*.cmi
 %{_libdir}/ocaml/Z3/z3*.mli
 %if %{with ocaml_opt}
-%{_libdir}/ocaml/Z3/libz3ml.a
 %{_libdir}/ocaml/Z3/z3ml.a
 %{_libdir}/ocaml/Z3/z3*.cmx
 %{_libdir}/ocaml/Z3/z3ml.cmxa
