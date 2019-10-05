@@ -1,0 +1,11 @@
+--- z3-Z3-4.8.5/CMakeLists.txt.orig	2019-05-31 16:46:11.000000000 +0200
++++ z3-Z3-4.8.5/CMakeLists.txt	2019-09-26 20:19:07.833305914 +0200
+@@ -140,7 +140,7 @@
+ # Build type
+ ################################################################################
+ message(STATUS "CMake generator: ${CMAKE_GENERATOR}")
+-set(available_build_types Debug Release RelWithDebInfo MinSizeRel)
++set(available_build_types Debug Release RelWithDebInfo MinSizeRel PLD)
+ if (DEFINED CMAKE_CONFIGURATION_TYPES)
+   # Multi-configuration build (e.g. Visual Studio and Xcode). Here
+   # CMAKE_BUILD_TYPE doesn't matter
