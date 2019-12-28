@@ -21,6 +21,7 @@ Group:		Applications/Engineering
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
 # Source0-md5:	18e7332ab136c1d8686ea719ed7107ed
 Patch0:		%{name}-pld.patch
+Patch1:		%{name}-ctz.patch
 URL:		https://github.com/Z3Prover/z3
 BuildRequires:	cmake >= 3.4
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -129,6 +130,7 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 %prep
 %setup -q -n z3-z3-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %if %{with ocaml}
@@ -168,16 +170,15 @@ cd build-cmake
 %cmake .. \
 	-DCMAKE_INSTALL_INCLUDEDIR=%{_includedir}/z3 \
 	-DCMAKE_INSTALL_PYTHON_PKG_DIR=%{py_sitescriptdir} \
-	%{?with_dotnet:-DINSTALL_DOTNET_BINDINGS=ON} \
-	-DINSTALL_JAVA_BINDINGS=ON \
-	-DINSTALL_PYTHON_BINDINGS=ON \
-	-DUSE_LIB_GMP=ON \
-	-DUSE_OPENMP=ON \
 	%{?with_apidocs:-DZ3_BUILD_DOCUMENTATION=ON} \
 	%{?with_dotnet:-DZ3_BUILD_DOTNET_BINDINGS=ON} \
 	-DZ3_BUILD_JAVA_BINDINGS=ON \
 	-DZ3_BUILD_LIBZ3_SHARED=ON \
-	-DZ3_BUILD_PYTHON_BINDINGS=ON
+	-DZ3_BUILD_PYTHON_BINDINGS=ON \
+	%{?with_dotnet:-DZ3_INSTALL_DOTNET_BINDINGS=ON} \
+	-DZ3_INSTALL_JAVA_BINDINGS=ON \
+	-DZ3_INSTALL_PYTHON_BINDINGS=ON \
+	-DZ3_USE_LIB_GMP=ON
 
 %{__make}
 

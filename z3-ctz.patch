@@ -1,0 +1,11 @@
+--- z3-z3-4.8.7/src/util/mpz.cpp.orig	2019-11-19 21:58:44.000000000 +0100
++++ z3-z3-4.8.7/src/util/mpz.cpp	2019-12-28 17:15:25.216519693 +0100
+@@ -70,7 +70,7 @@
+     return r;
+ }
+ 
+-#if defined(_WINDOWS) && !defined(_M_ARM) && !defined(_M_ARM64)
++#if (defined(_WINDOWS) || defined(__GNUC__)) && !defined(_M_ARM) && !defined(_M_ARM64)
+ // _trailing_zeros32 already defined using intrinsics
+ #else
+ inline uint32_t _trailing_zeros32(uint32_t x) {
