@@ -61,9 +61,7 @@ Pliki programistyczne Z3.
 Summary:	API documentation for Z3 library
 Summary(pl.UTF-8):	Dokumentacja API Biblioteki Z3
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API documentation for Z3 library.
