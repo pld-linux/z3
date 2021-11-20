@@ -14,7 +14,7 @@ Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
 Version:	4.8.7
-Release:	3
+Release:	4
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
