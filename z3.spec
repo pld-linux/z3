@@ -274,6 +274,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/ocaml/stublibs/dllz3ml.so
 %dir %{_libdir}/ocaml/Z3
+%{_libdir}/ocaml/Z3/META
 %{_libdir}/ocaml/Z3/z3ml.cma
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/Z3/z3ml.cmxs
@@ -281,7 +282,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n ocaml-z3-devel
 %defattr(644,root,root,755)
-%{_libdir}/ocaml/Z3/META
 %{_libdir}/ocaml/Z3/libz3ml.a
 %{_libdir}/ocaml/Z3/z3*.cmi
 %{_libdir}/ocaml/Z3/z3*.mli
