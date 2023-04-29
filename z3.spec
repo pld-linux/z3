@@ -13,13 +13,13 @@
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
-Version:	4.8.13
+Version:	4.8.17
 Release:	1
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
-# Source0-md5:	723a8859cc9b38b90d127aeca8144dc2
+# Source0-md5:	b0c2c37321f21ae9504a8fc112edd878
 Patch0:		%{name}-pld.patch
 URL:		https://github.com/Z3Prover/z3
 BuildRequires:	cmake >= 3.4
@@ -164,7 +164,8 @@ OCAMLOPT=ocamlc \
 install -d build-cmake
 cd build-cmake
 %cmake .. \
-	-DCMAKE_INSTALL_INCLUDEDIR=%{_includedir}/z3 \
+	-DCMAKE_INSTALL_INCLUDEDIR=include/z3 \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
 	-DCMAKE_INSTALL_PYTHON_PKG_DIR=%{py_sitescriptdir} \
 	%{?with_apidocs:-DZ3_BUILD_DOCUMENTATION=ON} \
 	%{?with_dotnet:-DZ3_BUILD_DOTNET_BINDINGS=ON} \
