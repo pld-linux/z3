@@ -4,23 +4,28 @@
 %bcond_with	dotnet		# .NET API (requires MS .NET SDK + mono)
 %bcond_without	ocaml		# OCaml API
 %bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+%bcond_with	sse2		# SSE2 instructions
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
 %ifnarch %{ix86} %{x8664} %{arm} aarch64 ppc sparc sparcv9
 %undefine	with_ocaml_opt
 %endif
+%ifarch %{x8664} x32 pentium4
+%define		with_sse2	1
+%endif
 
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
-Version:	4.8.17
+Version:	4.12.2
 Release:	1
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
-# Source0-md5:	b0c2c37321f21ae9504a8fc112edd878
+# Source0-md5:	4061317f7948c19abd13041c5a32b057
 Patch0:		%{name}-pld.patch
+Patch1:		%{name}-sse.patch
 URL:		https://github.com/Z3Prover/z3
 BuildRequires:	cmake >= 3.4
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -127,6 +132,12 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 %prep
 %setup -q -n z3-z3-%{version}
 %patch0 -p1
+%patch1 -p1
+
+%if %{without sse2}
+# no cmake option to disable, just architecture+compiler check
+%{__sed} -i -e 's/if (HAS_SSE2)/if (FALSE)/' CMakeLists.txt
+%endif
 
 %build
 %if %{with ocaml}
@@ -175,6 +186,7 @@ cd build-cmake
 	%{?with_dotnet:-DZ3_INSTALL_DOTNET_BINDINGS=ON} \
 	-DZ3_INSTALL_JAVA_BINDINGS=ON \
 	-DZ3_INSTALL_PYTHON_BINDINGS=ON \
+	%{!?with_sse2:-DUSE_SSE2=OFF} \
 	-DZ3_USE_LIB_GMP=ON
 
 %{__make}
@@ -245,9 +257,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE.txt README.md RELEASE_NOTES
+%doc LICENSE.txt README.md RELEASE_NOTES.md
 %attr(755,root,root) %{_libdir}/libz3.so.*.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/libz3.so.4.8
+%ghost %attr(755,root,root) %{_libdir}/libz3.so.4.12
 %attr(755,root,root) %{_bindir}/z3
 
 %files devel

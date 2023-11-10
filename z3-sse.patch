@@ -1,0 +1,24 @@
+--- z3-z3-4.12.2/src/util/hwf.cpp.orig	2023-05-12 21:59:04.000000000 +0200
++++ z3-z3-4.12.2/src/util/hwf.cpp	2023-11-06 19:03:19.396855936 +0100
+@@ -33,7 +33,9 @@ Revision History:
+ 
+ #if defined(__x86_64__) || defined(_M_X64) ||    \
+     defined(__i386) || defined(_M_IX86)
++#  ifdef __SSE2__
+ #define USE_INTRINSICS
++#  endif
+ #endif
+ 
+ #include "util/hwf.h"
+--- z3-z3-4.12.2/CMakeLists.txt.orig	2023-11-06 19:03:42.240065517 +0100
++++ z3-z3-4.12.2/CMakeLists.txt	2023-11-06 19:16:21.029288136 +0100
+@@ -250,7 +250,8 @@ endif()
+ # FP math
+ ################################################################################
+ # FIXME: Support ARM "-mfpu=vfp -mfloat-abi=hard"
+-if ((TARGET_ARCHITECTURE STREQUAL "x86_64") OR (TARGET_ARCHITECTURE STREQUAL "i686"))
++option(USE_SSE2 ON)
++if (USE_SSE2 AND ((TARGET_ARCHITECTURE STREQUAL "x86_64") OR (TARGET_ARCHITECTURE STREQUAL "i686")))
+   if ((CMAKE_CXX_COMPILER_ID MATCHES "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang") OR (CMAKE_CXX_COMPILER_ID MATCHES "Intel"))
+     set(SSE_FLAGS "-mfpmath=sse" "-msse" "-msse2")
+   elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
