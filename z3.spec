@@ -18,7 +18,7 @@ Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
 Version:	4.12.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
@@ -26,6 +26,7 @@ Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
 # Source0-md5:	4061317f7948c19abd13041c5a32b057
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-sse.patch
+Patch2:		%{name}-includes.patch
 URL:		https://github.com/Z3Prover/z3
 BuildRequires:	cmake >= 3.4
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -133,6 +134,7 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 %setup -q -n z3-z3-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %if %{without sse2}
 # no cmake option to disable, just architecture+compiler check
