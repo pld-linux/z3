@@ -3,7 +3,7 @@
 %bcond_without	apidocs		# Doxygen documentation
 %bcond_with	dotnet		# .NET API (requires MS .NET SDK + mono)
 %bcond_without	ocaml		# OCaml API
-%bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+%bcond_without	ocaml_opt	# native optimized binaries (bytecode is always built)
 %bcond_with	sse2		# SSE2 instructions
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
@@ -17,16 +17,15 @@
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
-Version:	4.12.2
-Release:	2
+Version:	4.12.6
+Release:	1
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
-# Source0-md5:	4061317f7948c19abd13041c5a32b057
+# Source0-md5:	0481db0fdd2ec05417d511dba271b702
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-sse.patch
-Patch2:		%{name}-includes.patch
 URL:		https://github.com/Z3Prover/z3
 BuildRequires:	cmake >= 3.4
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -134,7 +133,6 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 %setup -q -n z3-z3-%{version}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %if %{without sse2}
 # no cmake option to disable, just architecture+compiler check
@@ -281,7 +279,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n java-z3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libz3java.so
-%{_javadir}/com.microsoft.z3-*.*.*.*.jar
 %{_javadir}/com.microsoft.z3.jar
 
 %if %{with ocaml}
