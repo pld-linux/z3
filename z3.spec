@@ -14,6 +14,8 @@
 %define		with_sse2	1
 %endif
 
+%{?use_default_jdk}
+
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
@@ -27,9 +29,12 @@ Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-sse.patch
 URL:		https://github.com/Z3Prover/z3
-BuildRequires:	cmake >= 3.4
+BuildRequires:	cmake >= 3.16
 %{?with_apidocs:BuildRequires:	doxygen}
 BuildRequires:	gmp-devel
+BuildRequires:	gmp-c++-devel
+%buildrequires_jdk
+%{?use_jdk:BuildRequires:	%{use_jdk}-jre-base-X11}
 BuildRequires:	libgomp-devel
 BuildRequires:	libstdc++-devel >= 6:4.7
 %{?with_dotnet:BuildRequires:	mono-devel}
@@ -39,6 +44,11 @@ BuildRequires:	ocaml-findlib
 BuildRequires:	ocaml-zarith-devel
 %endif
 BuildRequires:	python
+BuildRequires:	python-modules
+BuildRequires:	python3
+BuildRequires:	python3-modules
+BuildRequires:	rpm-build >= 4.6
+BuildRequires:	rpmbuild(macros) >= 2.021
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -146,7 +156,7 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 # hack to avoid configuration failure
 OCAMLOPT=ocamlc \
 %endif
-%{__python} scripts/mk_make.py \
+%{__python3} scripts/mk_make.py \
 	--ml
 # --dotnet --java --python
 
@@ -165,7 +175,7 @@ OCAMLOPT=ocamlc \
 	src/shell/mem_initializer.cpp \
 	src/test/gparams_register_modules.cpp \
 	src/test/install_tactic.cpp \
-	src/test/mem_initializer.cpp 
+	src/test/mem_initializer.cpp
 %endif
 
 # use (unofficial) cmake suite for regular build, because mk_make would
@@ -178,6 +188,8 @@ cd build-cmake
 	-DCMAKE_INSTALL_INCLUDEDIR=include/z3 \
 	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
 	-DCMAKE_INSTALL_PYTHON_PKG_DIR=%{py_sitescriptdir} \
+	-DJAVA_HOME:PATH="%{java_home}" \
+	-DPython3_EXECUTABLE:PATH="%{__python3}" \
 	%{?with_apidocs:-DZ3_BUILD_DOCUMENTATION=ON} \
 	%{?with_dotnet:-DZ3_BUILD_DOTNET_BINDINGS=ON} \
 	-DZ3_BUILD_JAVA_BINDINGS=ON \
