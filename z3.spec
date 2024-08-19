@@ -259,7 +259,7 @@ install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a examples/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 # packaged as %doc in -apidocs
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/api
+%{?with_apidocs:%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/api}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
