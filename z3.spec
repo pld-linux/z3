@@ -141,8 +141,8 @@ API języka Python do biblioteki dowodzenia twierdzeń Z3.
 
 %prep
 %setup -q -n z3-z3-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %if %{without sse2}
 # no cmake option to disable, just architecture+compiler check
