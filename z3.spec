@@ -19,13 +19,13 @@
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
-Version:	4.12.6
+Version:	4.14.1
 Release:	1
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
-# Source0-md5:	0481db0fdd2ec05417d511dba271b702
+# Source0-md5:	1364320a9d2a95058a5ab4df10fa81cb
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-sse.patch
 URL:		https://github.com/Z3Prover/z3
@@ -36,17 +36,18 @@ BuildRequires:	gmp-c++-devel
 %buildrequires_jdk
 %{?use_jdk:BuildRequires:	%{use_jdk}-jre-base-X11}
 BuildRequires:	libgomp-devel
-BuildRequires:	libstdc++-devel >= 6:4.7
+# C++20
+BuildRequires:	libstdc++-devel >= 6:8
 %{?with_dotnet:BuildRequires:	mono-devel}
 %if %{with ocaml}
 BuildRequires:	ocaml
 BuildRequires:	ocaml-findlib
 BuildRequires:	ocaml-zarith-devel
 %endif
-BuildRequires:	python
-BuildRequires:	python-modules
-BuildRequires:	python3
-BuildRequires:	python3-modules
+BuildRequires:	python >= 1:2.7
+BuildRequires:	python-modules >= 1:2.7
+BuildRequires:	python3 >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.021
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -271,7 +272,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE.txt README.md RELEASE_NOTES.md
 %attr(755,root,root) %{_libdir}/libz3.so.*.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/libz3.so.4.12
+%ghost %attr(755,root,root) %{_libdir}/libz3.so.4.14
 %attr(755,root,root) %{_bindir}/z3
 
 %files devel
