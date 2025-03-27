@@ -4,6 +4,7 @@
 %bcond_with	dotnet		# .NET API (requires MS .NET SDK + mono)
 %bcond_without	ocaml		# OCaml API
 %bcond_without	ocaml_opt	# native optimized binaries (bytecode is always built)
+%bcond_without	python2		# Python2 modules
 %bcond_with	sse2		# SSE2 instructions
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
@@ -44,8 +45,10 @@ BuildRequires:	ocaml
 BuildRequires:	ocaml-findlib
 BuildRequires:	ocaml-zarith-devel
 %endif
+%if %{with python2}
 BuildRequires:	python >= 1:2.7
 BuildRequires:	python-modules >= 1:2.7
+%endif
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	rpm-build >= 4.6
@@ -129,16 +132,28 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 biblioteki Z3.
 
 %package -n python-z3
-Summary:	Python API for Z3 library
-Summary(pl.UTF-8):	API języka Python do biblioteki Z3
+Summary:	Python 2 API for Z3 library
+Summary(pl.UTF-8):	API języka Python 2 do biblioteki Z3
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 
 %description -n python-z3
-Python API for Z3 theorem prover library.
+Python 2 API for Z3 theorem prover library.
 
 %description -n python-z3 -l pl.UTF-8
-API języka Python do biblioteki dowodzenia twierdzeń Z3.
+API języka Python 2 do biblioteki dowodzenia twierdzeń Z3.
+
+%package -n python3-z3
+Summary:	Python 3 API for Z3 library
+Summary(pl.UTF-8):	API języka Python 3 do biblioteki Z3
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python3-z3
+Python 3 API for Z3 theorem prover library.
+
+%description -n python3-z3 -l pl.UTF-8
+API języka Python 3 do biblioteki dowodzenia twierdzeń Z3.
 
 %prep
 %setup -q -n z3-z3-%{version}
@@ -188,7 +203,7 @@ cd build-cmake
 %cmake .. \
 	-DCMAKE_INSTALL_INCLUDEDIR=include/z3 \
 	-DCMAKE_INSTALL_LIBDIR=%{_lib} \
-	-DCMAKE_INSTALL_PYTHON_PKG_DIR=%{py_sitescriptdir} \
+	-DCMAKE_INSTALL_PYTHON_PKG_DIR=%{py3_sitescriptdir} \
 	-DJAVA_HOME:PATH="%{java_home}" \
 	-DPython3_EXECUTABLE:PATH="%{__python3}" \
 	%{?with_apidocs:-DZ3_BUILD_DOCUMENTATION=ON} \
@@ -234,9 +249,17 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build-cmake install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with python2}
+install -d $RPM_BUILD_ROOT%{py_sitescriptdir}
+cp -pr $RPM_BUILD_ROOT%{py3_sitescriptdir}/z3 $RPM_BUILD_ROOT%{py_sitescriptdir}/z3
+
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_postclean
+%endif
+
+%py3_comp $RPM_BUILD_ROOT%{py3_sitescriptdir}
+%py3_ocomp $RPM_BUILD_ROOT%{py3_sitescriptdir}
 
 %if %{with ocaml}
 cd build-cmake
@@ -317,6 +340,12 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %endif
 
+%if %{with python2}
 %files -n python-z3
 %defattr(644,root,root,755)
 %{py_sitescriptdir}/z3
+%endif
+
+%files -n python3-z3
+%defattr(644,root,root,755)
+%{py3_sitescriptdir}/z3
