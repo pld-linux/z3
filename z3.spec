@@ -20,13 +20,13 @@
 Summary:	High-performance theorem prover developed at Microsoft Research
 Summary(pl.UTF-8):	Wydajne narzędzie do dowodzenia twierdzeń tworzone przez Microsoft Research
 Name:		z3
-Version:	4.14.1
+Version:	4.15.2
 Release:	1
 License:	MIT
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Z3Prover/z3/releases
 Source0:	https://github.com/Z3Prover/z3/archive/z3-%{version}.tar.gz
-# Source0-md5:	1364320a9d2a95058a5ab4df10fa81cb
+# Source0-md5:	edce98c601844cd0883d9f552ba8232c
 Patch0:		%{name}-pld.patch
 Patch1:		%{name}-sse.patch
 URL:		https://github.com/Z3Prover/z3
@@ -295,12 +295,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE.txt README.md RELEASE_NOTES.md
 %attr(755,root,root) %{_libdir}/libz3.so.*.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/libz3.so.4.14
+%ghost %{_libdir}/libz3.so.4.15
 %attr(755,root,root) %{_bindir}/z3
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libz3.so
+%{_libdir}/libz3.so
 %{_includedir}/z3
 %{_pkgconfigdir}/z3.pc
 %{_libdir}/cmake/z3
