@@ -67,7 +67,7 @@ Microsoft Research.
 Summary:	Development files for Z3
 Summary(pl.UTF-8):	Pliki programistyczne Z3
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Development files for Z3.
@@ -91,7 +91,7 @@ Dokumentacja API Biblioteki Z3.
 Summary:	Java API for Z3 library
 Summary(pl.UTF-8):	API języka Java do biblioteki Z3
 Group:		Libraries/Java
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description -n java-z3
 Java API for Z3 theorem prover library.
@@ -103,7 +103,7 @@ API języka Java do biblioteki dowodzenia twierdzeń Z3.
 Summary:	Z3 binding for OCaml
 Summary(pl.UTF-8):	Wiązania Z3 dla OCamla
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	ocaml-zarith
 %requires_eq	ocaml-runtime
 
@@ -119,7 +119,7 @@ używających biblioteki Z3.
 Summary:	Z3 binding for OCaml - development part
 Summary(pl.UTF-8):	Wiązania Z3 dla OCamla - cześć programistyczna
 Group:		Development/Libraries
-Requires:	ocaml-z3 = %{version}-%{release}
+Requires:	ocaml-z3%{?_isa} = %{version}-%{release}
 Requires:	ocaml-zarith-devel
 %requires_eq	ocaml
 
@@ -135,7 +135,7 @@ biblioteki Z3.
 Summary:	Python 2 API for Z3 library
 Summary(pl.UTF-8):	API języka Python 2 do biblioteki Z3
 Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description -n python-z3
 Python 2 API for Z3 theorem prover library.
@@ -147,7 +147,7 @@ API języka Python 2 do biblioteki dowodzenia twierdzeń Z3.
 Summary:	Python 3 API for Z3 library
 Summary(pl.UTF-8):	API języka Python 3 do biblioteki Z3
 Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description -n python3-z3
 Python 3 API for Z3 theorem prover library.
